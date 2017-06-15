@@ -14,6 +14,11 @@ public class WorkExperience {
 		
 		
 	}
+	public ArrayList<Job> getList()
+	{
+		return workExp;
+	}
+	
 	public void addJob(Job j)
 	{
 		if(workExp.size()==10)
@@ -25,6 +30,10 @@ public class WorkExperience {
 		{
 			workExp.add(j);
 		}
+	}
+	public Job getJob(int i)
+	{
+		return workExp.get(i);
 	}
 	
 	@Override

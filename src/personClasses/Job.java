@@ -31,8 +31,11 @@ public class Job {
 		startDate=aStartDate;
 		endDate=anEndDate;
 		company=aCompany;
+		
+		duty=new ArrayList<String>();
 		Database db=new Database();
 		db.addEmployment(aName, aCompany, aStartDate, anEndDate, persID);
+		empID=db.getEmplomentID();
 		
 	}
 	public Job(String aName, String aCompany, ArrayList<String> duties, String aStartDate, String anEndDate, String persID)
@@ -86,6 +89,14 @@ public class Job {
 	{
 		return endDate;
 	}
+	public ArrayList<String> getDuties()
+	{
+		return duty;
+	}
+	
+	
+	
+	
 	
 	public void setEnd(String anEndDate)
 	{
@@ -108,6 +119,10 @@ public class Job {
 		{
 			db.addDuty(empID, duty.get(i));
 		}
+	}
+	public String exceptDuties()
+	{
+		return  name+":<br>"+company+", " +startDate+" - "+endDate+"<br>"+"<br>";
 	}
 	
 	public String toString()

@@ -36,11 +36,11 @@ public class SkillsList {
 	{
 		if(!skill.isEmpty())
 		{	
-			StringBuilder build = new StringBuilder("Skills\n");
+			StringBuilder build = new StringBuilder("Skills<br>");
 				
 			for(int i=0;i<skill.size(); i++)
 			{
-				build.append(skill.get(i).toString()+"\n");
+				build.append(skill.get(i).toString()+"<br>");
 					
 				
 			}

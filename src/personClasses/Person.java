@@ -32,9 +32,14 @@ public Person(String aName, String anEmail){
 	    
 	    edu=aEdu;
 	    name=aName;
+	    
 	    workExp=aWE;
 	    email=anEmail;
 	    skills=aSL;
+	    
+	    Database db=new Database();
+	    db.addPerson(aName, anEmail);
+	    id=this.fetchID();
 	}
 	
 	
@@ -131,6 +136,6 @@ public Person(String aName, String anEmail){
 	public String toString()
 	{
 	
-		return name+"\n"+email +"\n \n"+edu.toString() +workExp.toString()+skills.toString();
+		return name+"<br>"+email +"<br> <br>"+edu.toString() +workExp.toString()+skills.toString();
 	}
 }
