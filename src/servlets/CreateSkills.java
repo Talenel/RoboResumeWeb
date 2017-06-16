@@ -30,34 +30,40 @@ public class CreateSkills extends HttpServlet {
 		HttpSession session = request.getSession();
 		
 		String nextURL;
+		String error;
+		String message;
 		
 		String skillName = request.getParameter("skillName");
 		String skillRating = request.getParameter("skillRating");
-		
-		
 		Person pers= (Person) session.getAttribute("person");
 		
-		Skill s=new Skill(skillName,skillRating,pers.getID());
-		pers.getSkills().addSkill(s);;
-		
-		
-		
-		String error="";
-		
-		String message=s.toString();
-		
-		
-		System.out.println("answer  "+request.getParameter("continue"));
-		if(!(request.getParameter("continue")==null))
+		if(skillName.equals("")||skillRating.equals(""))
 		{
+			error="One of the fields was left empty.  All fields must be filled!";
+			message="";
 			nextURL = "/createSkill.jsp";
 		}
 		else
 		{
-			nextURL = "/RoboResume.jsp";
+			Skill s=new Skill(skillName,skillRating,pers.getID());
+			pers.getSkills().addSkill(s);;
 			
+			error="";
+			
+			message=s.toString();
+			
+			
+			if(!(request.getParameter("continue")==null))
+			{
+				nextURL = "/createSkill.jsp";
+			}
+			else
+			{
+				nextURL = "/RoboResumeSpec.jsp";
+				request.setAttribute("resume", pers.toString());
+			}
 		}
-		request.setAttribute("resume", pers.toString());
+		
 		
 		request.setAttribute("error", error);
 		request.setAttribute("message", message);

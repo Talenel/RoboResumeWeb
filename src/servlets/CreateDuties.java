@@ -31,31 +31,40 @@ public class CreateDuties extends HttpServlet {
 		HttpSession session = request.getSession();
 		
 		String nextURL;
+		String error;
+		String message;
 		
 		String dutyDesc = request.getParameter("dutyDesc");
 		Person pers= (Person) session.getAttribute("person");
-		pers.getWorkExp().getJob(pers.getWorkExp().getList().size()-1).getDuties().add(dutyDesc);
 		
 		
-		
-		String error="";
-		
-		String message=dutyDesc;
-		request.setAttribute("error", error);
-		request.setAttribute("message", message);
-		
-		System.out.println("answer  "+request.getParameter("continue"));
-		if(!(request.getParameter("continue")==null))
+		if(dutyDesc.equals(""))
 		{
+			error="One of the fields was left empty.  All fields must be filled!";
+			message="";
 			nextURL = "/createDuties.jsp";
 		}
+			
 		else
 		{
-			nextURL = "/createWorkExperience.jsp";
-			pers.getWorkExp().getJob(pers.getWorkExp().getList().size()-1).inputDuties();
-			
+			pers.getWorkExp().getJob(pers.getWorkExp().getList().size()-1).getDuties().add(dutyDesc);
+			error="";
+			message=dutyDesc;
+			if(!(request.getParameter("continue")==null))
+			{
+				nextURL = "/createDuties.jsp";
+			}
+			else
+			{
+				nextURL = "/createWorkExperience.jsp";
+				pers.getWorkExp().getJob(pers.getWorkExp().getList().size()-1).inputDuties();
+				
+			}
 		}
 		
+		
+		request.setAttribute("error", error);
+		request.setAttribute("message", message);
 		session.setAttribute("person", pers);
 		getServletContext().getRequestDispatcher(nextURL).forward(request,response);
 	}

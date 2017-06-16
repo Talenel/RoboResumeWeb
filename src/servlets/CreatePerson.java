@@ -30,20 +30,34 @@ public class CreatePerson extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
 		HttpSession session = request.getSession();
-		String nextURL = "/createEducation.jsp";
+		String nextURL;
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");
-		Education edu=new Education();
-		WorkExperience workExp=new WorkExperience();
-		SkillsList s=new SkillsList();
-		Person pers=new Person(name,edu,workExp, s, email);
-		
-		
-		session.setAttribute("person", pers);
-		String error="";
-		
-		String message=pers.getID()+"\t"+pers.getName()+"\t"+pers.getEmail();
+		String error;
+		String message;
+		if(name.equals("")||email.equals(""))
+		{
+			nextURL = "/createPerson.jsp";
+			error="One of the fields was left empty.  All fields must be filled!";
+			message="";
+		}
+		else
+		{
+			 nextURL = "/createEducation.jsp";
+			Education edu=new Education();
+			WorkExperience workExp=new WorkExperience();
+			SkillsList s=new SkillsList();
+			Person pers=new Person(name,edu,workExp, s, email);
+			
+			
+			session.setAttribute("person", pers);
+			error="";
+			
+			message=pers.getID()+"\t"+pers.getName()+"\t"+pers.getEmail();
+			
+		}
 		request.setAttribute("error", error);
 		request.setAttribute("message", message);
 		

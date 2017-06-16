@@ -32,11 +32,11 @@ public class Education {
 	{
 		if(!edu.isEmpty())
 		{	
-			StringBuilder build = new StringBuilder("Education<br>");
+			StringBuilder build = new StringBuilder("<h3 class=\"title\">Education</h3><br>");
 			
 			for(int i=0;i<edu.size(); i++)
 			{
-				build.append(edu.get(i).toString()+"<br>");
+				build.append("<p class=\"school\">"+edu.get(i).toString()+"</p><br>");
 				
 				
 			}
@@ -44,7 +44,7 @@ public class Education {
 		}
 		else
 		{
-			return "This person is uneducated<br><br>";
+			return "<p class=\"job\">This person is uneducated</p><br><br>";
 		}
 		
 	}

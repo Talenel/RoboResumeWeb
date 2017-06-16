@@ -136,6 +136,6 @@ public Person(String aName, String anEmail){
 	public String toString()
 	{
 	
-		return name+"<br>"+email +"<br> <br>"+edu.toString() +workExp.toString()+skills.toString();
+		return "<h4>"+name+"<br>"+email +"</h4><br> <br>"+edu.toString() +workExp.toString()+skills.toString();
 	}
 }

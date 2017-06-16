@@ -32,6 +32,8 @@ public class CreateEducation extends HttpServlet {
 		HttpSession session = request.getSession();
 		
 		String nextURL;
+		String error;
+		String message;
 		
 		String college = request.getParameter("college");
 		String yearGrad = request.getParameter("yearGrad");
@@ -39,28 +41,36 @@ public class CreateEducation extends HttpServlet {
 		String degMajor = request.getParameter("degMajor");
 		
 		Person pers= (Person) session.getAttribute("person");
-		
-		Schooling sch=new Schooling(college, Integer.parseInt(yearGrad),degType,degMajor, pers.getID());
-		pers.getEducation().addSchooling(sch);
-		
-		
-		
-		String error="";
-		
-		String message=sch.toString();
-		request.setAttribute("error", error);
-		request.setAttribute("message", message);
-		System.out.println("answer  "+request.getParameter("continue"));
-		if(!(request.getParameter("continue")==null))
+		if(college.equals("")||yearGrad.equals("")|| degType.equals("")|| degMajor.equals(""))
 		{
 			nextURL = "/createEducation.jsp";
+			message="";
+			error="One of the fields was left empty.  All fields must be filled!";
 		}
 		else
 		{
-			nextURL = "/createWorkExperience.jsp";
-			
-		}
+			Schooling sch=new Schooling(college, Integer.parseInt(yearGrad),degType,degMajor, pers.getID());
 		
+			pers.getEducation().addSchooling(sch);
+			
+			
+			
+			error="";
+			
+			message=sch.toString();
+			
+			if(!(request.getParameter("continue")==null))
+			{
+				nextURL = "/createEducation.jsp";
+			}
+			else
+			{
+				nextURL = "/createWorkExperience.jsp";
+				
+			}
+		}
+		request.setAttribute("error", error);
+		request.setAttribute("message", message);
 		session.setAttribute("person", pers);
 		getServletContext().getRequestDispatcher(nextURL).forward(request,response);
 		

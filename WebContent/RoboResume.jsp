@@ -7,10 +7,11 @@
 <title>Insert title here</title>
 </head>
 <body>
+<h1>Resume</h1>
 <p>${resume}</p>
 <br>
 <br>
 <br>
-<a href="http://localhost:8080/RoboResumeWeb/createPerson.html" class="btn btn-default">Home</a>
+<a href="http://localhost:8080/RoboResumeWeb/createPerson.jsp" class="btn btn-default">Home</a>
 </body>
 </html>

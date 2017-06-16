@@ -3,10 +3,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 
 public class Database {
 
@@ -19,17 +16,19 @@ public class Database {
 	public String getPersonID()
 	{
 		Connection con = null;
-		Statement stmt = null;
+		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		String sql = "select persID from Person order by persID asc";
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/ResumeInfo?autoReconnect=true&useSSL=false&"
                                 + "user=root&password=password");
-			stmt = con.createStatement();
-			rs = stmt.executeQuery(sql);
+			stmt = con.prepareStatement(sql);
+			rs = stmt.executeQuery();
+			
 			rs.last();
 			return rs.getString(1);
+			
 			}catch (SQLException e) {
 				e.printStackTrace();
 			}catch (ClassNotFoundException e) {
@@ -54,17 +53,19 @@ public class Database {
 	public String getEmplomentID()
 	{
 		Connection con = null;
-		Statement stmt = null;
+		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String sql = "select empID from Employment";
+		String sql = "select empID from Employment order by empID asc";
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/ResumeInfo?autoReconnect=true&useSSL=false&"
                                 + "user=root&password=password");
-			stmt = con.createStatement();
-			rs = stmt.executeQuery(sql);
+			stmt = con.prepareStatement(sql);
+			rs = stmt.executeQuery();
+			
 			rs.last();
 			return rs.getString(1);
+			
 			}catch (SQLException e) {
 				e.printStackTrace();
 			}catch (ClassNotFoundException e) {
@@ -99,12 +100,8 @@ public class Database {
 			stmt = con.prepareStatement(sql);
 			stmt.setString(1, name);
 			stmt.setString(2, email);
-			 if(!stmt.execute())
-			 {
-				 
-				
-				
-			}
+			stmt.execute();
+			 
 			}catch (SQLException e) {
 				e.printStackTrace();
 			}catch (ClassNotFoundException e) {
@@ -123,48 +120,28 @@ public class Database {
 	public void addSchooling(String college, int yearGrad, String degType, String degMajor,String persID)
 	{
 		Connection con=null;
-		Statement stmt=null;
-		ResultSet rs=null;
-		String sql = "Insert into Schooling(persID, degType, degMajor, college, yearGrad) values('"+persID+"','"+degType+"','"+degMajor+"','"+college+"','"+yearGrad+"')";
+		PreparedStatement stmt=null;
+		String sql = "Insert into Schooling(persID, degType, degMajor, college, yearGrad) values(?,?,?,?,?)";
 		
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/ResumeInfo?autoReconnect=true&useSSL=false&"
                                 + "user=root&password=password");
-			stmt = con.createStatement();
-			 if(!stmt.execute(sql))
-			 {
-				 
-				
-				sql= "Select * from Schooling where persID='"+persID+"'";
-				stmt=con.createStatement();
-				rs=stmt.executeQuery(sql);
-				
-				ResultSetMetaData col=rs.getMetaData();
-				for(int i=1;i<=col.getColumnCount();i++)
-				{
-					
-					System.out.print(col.getColumnName(i) + "\t");
-				}
-				System.out.println();
-				System.out.println();
-						
-				rs.last();	
-				for(int i=1;i<=col.getColumnCount();i++)
-				{
-						
-					System.out.print(rs.getString(i) + "\t");
-				}
-				System.out.println();
-				
-			}
+			stmt = con.prepareStatement(sql);
+			stmt.setString(1, persID);
+			stmt.setString(2, degType);
+			stmt.setString(3, degMajor);
+			stmt.setString(4, college);
+			stmt.setInt(5, yearGrad);
+			stmt.execute();
+
 			}catch (SQLException e) {
 				e.printStackTrace();
 			}catch (ClassNotFoundException e) {
 				e.printStackTrace();
 		} finally {
 			try {
-				rs.close();
+				
 				stmt.close();
 				con.close();
 			}catch(SQLException e){
@@ -177,48 +154,27 @@ public class Database {
 	public void addEmployment(String title, String company, String startDate, String endDate, String persID)
 	{
 		Connection con=null;
-		Statement stmt=null;
-		ResultSet rs=null;
-		String sql = "Insert into Employment(persID, title, company, startDate, endDate) values('"+persID+"','"+title+"','"+company+"','"+startDate+"','"+endDate+"')";
+		PreparedStatement stmt=null;
+		String sql = "Insert into Employment(persID, title, company, startDate, endDate) values(?,?,?,?,?)";
 		
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/ResumeInfo?autoReconnect=true&useSSL=false&"
                                 + "user=root&password=password");
-			stmt = con.createStatement();
-			 if(!stmt.execute(sql))
-			 {
-				 
-				
-				sql= "Select * from Employment where persID='"+persID+"'";
-				stmt=con.createStatement();
-				rs=stmt.executeQuery(sql);
-				
-				ResultSetMetaData col=rs.getMetaData();
-				for(int i=1;i<=col.getColumnCount();i++)
-				{
-					
-					System.out.print(col.getColumnName(i) + "\t");
-				}
-				System.out.println();
-				System.out.println();
-						
-				rs.last();	
-				for(int i=1;i<=col.getColumnCount();i++)
-				{
-						
-					System.out.print(rs.getString(i) + "\t");
-				}
-				System.out.println();
-				
-			}
+			stmt = con.prepareStatement(sql);
+			stmt.setString(1, persID);
+			stmt.setString(2, title);
+			stmt.setString(3, company);
+			stmt.setString(4, startDate);
+			stmt.setString(5, endDate);
+			stmt.execute();
+			
 			}catch (SQLException e) {
 				e.printStackTrace();
 			}catch (ClassNotFoundException e) {
 				e.printStackTrace();
 		} finally {
 			try {
-				rs.close();
 				stmt.close();
 				con.close();
 			}catch(SQLException e){
@@ -231,48 +187,24 @@ public class Database {
 	public void addDuty(String empID, String dutyDesc)
 	{
 		Connection con=null;
-		Statement stmt=null;
-		ResultSet rs=null;
-		String sql = "Insert into Duty(empID, dutyDesc) values('"+empID+"','"+dutyDesc+"')";
+		PreparedStatement stmt=null;
+		String sql = "Insert into Duty(empID, dutyDesc) values(?,?)";
 		
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/ResumeInfo?autoReconnect=true&useSSL=false&"
                                 + "user=root&password=password");
-			stmt = con.createStatement();
-			 if(!stmt.execute(sql))
-			 {
-				 
-				
-				sql= "Select * from Duty where empID='"+empID+"'";
-				stmt=con.createStatement();
-				rs=stmt.executeQuery(sql);
-				
-				ResultSetMetaData col=rs.getMetaData();
-				for(int i=1;i<=col.getColumnCount();i++)
-				{
-					
-					System.out.print(col.getColumnName(i) + "\t");
-				}
-				System.out.println();
-				System.out.println();
-						
-				rs.last();	
-				for(int i=1;i<=col.getColumnCount();i++)
-				{
-						
-					System.out.print(rs.getString(i) + "\t");
-				}
-				System.out.println();
-				
-			}
+			stmt = con.prepareStatement(sql);
+			stmt.setString(1,empID);
+			stmt.setString(2, dutyDesc);
+			stmt.execute();
+			
 			}catch (SQLException e) {
 				e.printStackTrace();
 			}catch (ClassNotFoundException e) {
 				e.printStackTrace();
 		} finally {
 			try {
-				rs.close();
 				stmt.close();
 				con.close();
 			}catch(SQLException e){
@@ -289,48 +221,25 @@ public class Database {
 	public void addSkills(String persID, String skillName,String skillRating)
 	{
 		Connection con=null;
-		Statement stmt=null;
-		ResultSet rs=null;
-		String sql = "Insert into Skill(persID, skillName, skillRating) values('"+persID+"','"+skillName+"','"+skillRating+"')";
+		PreparedStatement stmt=null;
+		String sql = "Insert into Skill(persID, skillName, skillRating) values(?,?,?)";
 		
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/ResumeInfo?autoReconnect=true&useSSL=false&"
                                 + "user=root&password=password");
-			stmt = con.createStatement();
-			 if(!stmt.execute(sql))
-			 {
-				 
-				
-				sql= "Select * from Skill where persID='"+persID+"'";
-				stmt=con.createStatement();
-				rs=stmt.executeQuery(sql);
-				
-				ResultSetMetaData col=rs.getMetaData();
-				for(int i=1;i<=col.getColumnCount();i++)
-				{
-					
-					System.out.print(col.getColumnName(i) + "\t");
-				}
-				System.out.println();
-				System.out.println();
-						
-				rs.last();	
-				for(int i=1;i<=col.getColumnCount();i++)
-				{
-						
-					System.out.print(rs.getString(i) + "\t");
-				}
-				System.out.println();
-				
-			}
+			stmt = con.prepareStatement(sql);
+			stmt.setString(1, persID);
+			stmt.setString(2, skillName);
+			stmt.setString(3, skillRating);
+			stmt.execute();
+			 
 			}catch (SQLException e) {
 				e.printStackTrace();
 			}catch (ClassNotFoundException e) {
 				e.printStackTrace();
 		} finally {
 			try {
-				rs.close();
 				stmt.close();
 				con.close();
 			}catch(SQLException e){

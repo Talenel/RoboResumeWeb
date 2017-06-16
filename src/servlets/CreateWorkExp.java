@@ -32,8 +32,9 @@ public class CreateWorkExp extends HttpServlet {
 		HttpSession session = request.getSession();
 		
 		String nextURL;
-		System.out.println("answer  "+request.getParameter("continue"));
 		Person pers= (Person) session.getAttribute("person");
+		String error;
+		String message;
 		if(!(request.getParameter("continue")==null))
 		{
 			nextURL = "/createSkill.jsp";
@@ -47,20 +48,27 @@ public class CreateWorkExp extends HttpServlet {
 			String start = request.getParameter("start");
 			String end = request.getParameter("end");
 			
+			if(title.equals("")||company.equals("")|| start.equals("")|| end.equals(""))
+			{
+				nextURL = "/createWorkExp.jsp";
+				message="";
+				error="One of the fields was left empty.  All fields must be filled!";
+				
+			}
+			else
+			{
+				Job j=new Job(title, company,start,end, pers.getID());
+				pers.getWorkExp().addJob(j);
+				
+				error="";
+				nextURL = "/createDuties.jsp";
+				message=j.exceptDuties();
+				
+			}
 			
-			
-			Job j=new Job(title, company,start,end, pers.getID());
-			pers.getWorkExp().addJob(j);
-			
-			
-			
-			String error="";
-			
-			String message=j.exceptDuties();
 			request.setAttribute("error", error);
 			request.setAttribute("message", message);
-			nextURL = "/createDuties.jsp";
-			
+					
 		}
 		
 		session.setAttribute("person", pers);

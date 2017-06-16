@@ -41,11 +41,11 @@ public class WorkExperience {
 	{
 		if(!workExp.isEmpty())
 		{	
-			StringBuilder build = new StringBuilder("Work Experience<br>");
+			StringBuilder build = new StringBuilder("<h3 class=\"title\">Work Experience</h3><br>");
 			
 			for(int i=0;i<workExp.size(); i++)
 			{
-				build.append(workExp.get(i).toString()+"<br>");
+				build.append("<p class=\"job\">"+workExp.get(i).toString()+"</p><br>");
 				
 				
 			}
@@ -53,7 +53,7 @@ public class WorkExperience {
 		}
 		else
 		{
-			return "This person is a freeloader<br><br>";
+			return "<p class=\"job\">This person is a freeloader</p><br><br>";
 		}
 		
 	}

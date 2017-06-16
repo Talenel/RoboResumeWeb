@@ -36,11 +36,11 @@ public class SkillsList {
 	{
 		if(!skill.isEmpty())
 		{	
-			StringBuilder build = new StringBuilder("Skills<br>");
+			StringBuilder build = new StringBuilder("<h3>Skills</h3><br>");
 				
 			for(int i=0;i<skill.size(); i++)
 			{
-				build.append(skill.get(i).toString()+"<br>");
+				build.append("<p class=\"skill\">"+skill.get(i).toString()+"</p><br>");
 					
 				
 			}
@@ -48,7 +48,7 @@ public class SkillsList {
 		}
 		else
 		{
-			return "This person is incompetent\n\n";
+			return "<p class=\"skill\">This person is incompetent</p><br><br>";
 		}
 			
 	}
