@@ -1,6 +1,8 @@
 package servlets;
 import personClasses.*;
 import java.io.IOException;
+import java.time.LocalDate;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -49,24 +51,43 @@ public class CreateEducation extends HttpServlet {
 		}
 		else
 		{
-			Schooling sch=new Schooling(college, Integer.parseInt(yearGrad),degType,degMajor, pers.getID());
-		
-			pers.getEducation().addSchooling(sch);
-			
-			
-			
-			error="";
-			
-			message=sch.toString();
-			
-			if(!(request.getParameter("continue")==null))
-			{
-				nextURL = "/createEducation.jsp";
-			}
-			else
-			{
-				nextURL = "/createWorkExperience.jsp";
+			try{
+				int year=Integer.parseInt(yearGrad);
+				if( year>1900 && year<=LocalDate.now().getYear())
+				{
+					Schooling sch=new Schooling(college,year,degType,degMajor, pers.getID());
 				
+					pers.getEducation().addSchooling(sch);
+					
+					
+					
+					error="";
+					
+					message=sch.toString();
+					
+					if(!(request.getParameter("continue")==null))
+					{
+						nextURL = "/createEducation.jsp";
+					}
+					else
+					{
+						nextURL = "/createWorkExperience.jsp";
+						
+					}
+				}
+				else
+				{
+					nextURL = "/createEducation.jsp";
+					message="";
+					error="The year value in the Year Graduated field needs to be between 1900 and the current year to be valid!";
+				}
+			}
+			catch(NumberFormatException e)
+			{
+				
+				nextURL = "/createEducation.jsp";
+				message="";
+				error="The Year Graduated field needs to be an Integer!";
 			}
 		}
 		request.setAttribute("error", error);

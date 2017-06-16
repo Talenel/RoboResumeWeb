@@ -45,23 +45,32 @@ public class CreateSkills extends HttpServlet {
 		}
 		else
 		{
-			Skill s=new Skill(skillName,skillRating,pers.getID());
-			pers.getSkills().addSkill(s);;
-			
-			error="";
-			
-			message=s.toString();
-			
-			
-			if(!(request.getParameter("continue")==null))
-			{
-				nextURL = "/createSkill.jsp";
-			}
+			//if(skillRating.equals("familiar")||skillRating.equals("intermediate")||skillRating.equals("proficient")||skillRating.equals("expert"))
+			//{	
+				Skill s=new Skill(skillName,skillRating,pers.getID());
+				pers.getSkills().addSkill(s);;
+				
+				error="";
+				
+				message=s.toString();
+				
+				
+				if(!(request.getParameter("continue")==null))
+				{
+					nextURL = "/createSkill.jsp";
+				}
+				else
+				{
+					nextURL = "/RoboResumeSpec.jsp";
+					request.setAttribute("resume", pers.toString());
+				}
+			/*}
 			else
 			{
-				nextURL = "/RoboResumeSpec.jsp";
-				request.setAttribute("resume", pers.toString());
-			}
+				error="The skill rating field is invalid! Please choose 'familiar','intermediate','proficient' or 'expert'";
+				message="";
+				nextURL = "/createSkill.jsp";
+			}	*/
 		}
 		
 		
